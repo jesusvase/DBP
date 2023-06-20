@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "About";
+    <link href="~/Content/css/Register.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+}
+
+
+
+<nav class="nav justify-content-center">
+    <a href="#" class="nav-item nav-link active">Home</a>
+    <a href="#" class="nav-item nav-link">Profile</a>
+    <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
+    <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
+</nav>
+
+<div class="container">
+    <table id="tablaUsuarios" class="table table-striped table-bordered">
+        <thead class="table-white">
+            <tr>
+                <th>Correo</th>
+                <th>Clave</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div id="formContainer" class="container" style="display: none;">
+    <h2>Actualizar Usuario</h2>
+    <form id="updateForm">
+        <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input type="email" class="form-control" id="correo" required>
+        </div>
+        <div class="form-group">
+            <label for="clave">Clave:</label>
+            <input type="password" class="form-control" id="clave" required>
+        </div>
+        <div class="form-group">
+            <label for="tipo">Tipo:</label>
+            <input type="text" class="form-control" id="tipo" required>
+        </div>
+        <button type="button" class="btn btn-primary" id="updateButton">Actualizar</button>
+        <button type="button" class="btn btn-danger" id="deleteButton">Eliminar</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    function loadUsuarios() {
+        fetch('/Acceso/GetUsuarios')
+            .then(response => response.json())
+            .then(data => {
+                const tabla = document.getElementById('tablaUsuarios');
+                const tbody = tabla.querySelector('tbody');
+
+                // Clonar el elemento tbody
+                const newTbody = tbody.cloneNode(false);
+
+                // Reemplazar el tbody existente por el clon
+                tbody.parentNode.replaceChild(newTbody, tbody);
+
+                data.forEach(usuario => {
+                    const row = document.createElement('tr');
+
+                    const correoCell = document.createElement('td');
+                    correoCell.textContent = usuario.Correo;
+                    row.appendChild(correoCell);
+
+                    const claveCell = document.createElement('td');
+                    claveCell.textContent = usuario.Clave;
+                    row.appendChild(claveCell);
+
+                    const tipoCell = document.createElement('td');
+                    tipoCell.textContent = usuario.Tipo;
+                    row.appendChild(tipoCell);
+
+                    const accionesCell = document.createElement('td');
+                    const updateButton = document.createElement('button');
+                    updateButton.textContent = 'Actualizar';
+                    updateButton.classList.add('btn', 'btn-primary', 'mr-2'); // Agrega la clase 'mr-2' para agregar un margen derecho
+                    updateButton.addEventListener('click', function () {
+                        mostrarFormulario(usuario);
+                    });
+                    accionesCell.appendChild(updateButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.classList.add('btn', 'btn-danger');
+                    deleteButton.addEventListener('click', function () {
+                        eliminarUsuario(usuario);
+                    });
+                    accionesCell.appendChild(deleteButton);
+
+                    row.appendChild(accionesCell);
+
+                    newTbody.appendChild(row);
+                });
+
+                // Agregar el nuevo tbody con las filas a la tabla
+                tabla.appendChild(newTbody);
+            });
+    }
+
+
+    function mostrarFormulario(usuario) {
+        const formContainer = document.getElementById('formContainer');
+        const form = document.getElementById('updateForm');
+        const correoInput = document.getElementById('correo');
+        const claveInput = document.getElementById('clave');
+        const tipoInput = document.getElementById('tipo');
+
+        correoInput.value = usuario.Correo;
+        claveInput.value = '';
+        tipoInput.value = usuario.Tipo;
+
+        formContainer.style.display = 'block';
+
+        document.getElementById('updateButton').addEventListener('click', function () {
+            const updatedCorreo = correoInput.value;
+            const updatedClave = claveInput.value;
+            const updatedTipo = tipoInput.value;
+
+            fetch('/Acceso/UpdateUsuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    IdUsuario: usuario.IdUsuario,
+                    Correo: updatedCorreo,
+                    Clave: updatedClave,
+                    Tipo: updatedTipo
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    formContainer.style.display = 'none';
+                    loadUsuarios();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+        
+    }
+
+    function eliminarUsuario(usuario) {
+        if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+            fetch('/Acceso/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    IdUsuario: usuario.IdUsuario
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    toastr.success('El usuario ha sido eliminado exitosamente');
+                    loadUsuarios();
+                })
+                .catch(error => {
+                    console.error(error);
+                    toastr.error('Se produjo un error al eliminar el usuario');
+                });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadUsuarios();
+    });
+</script>
+
