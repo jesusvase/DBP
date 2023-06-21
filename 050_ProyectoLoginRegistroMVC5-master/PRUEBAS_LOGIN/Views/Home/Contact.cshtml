@@ -72,6 +72,22 @@
         </form>
     </div>
 
+    <div class="container">
+        <h1>Ventas</h1>
+        <table class="table" id="tablaVentas">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Precio de Venta</th>
+                    <th>Fecha de Venta</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
 
     <div class="container">
         <h1>Inventario</h1>
@@ -109,11 +125,11 @@
         <form action="@Url.Action("AgregarVenta", "Carro")" method="post">
             <div>
                 <label for="cliente">Cliente:</label>
-                <select id="TipoClienteID" name="TipoClienteID" required></select>
+                <select id="TipoClienteID" name="ClienteID" required></select>
             </div>
             <div>
                 <label for="vehiculo">Vehículo:</label>
-                <select id="TipoVehiculoID" name="TipoVehiculoID" required></select>
+                <select id="TipoVehiculoID" name="VehiculoID" required></select>
             </div>
             <div>
                 <label for="fecha">Fecha de Venta:</label>
@@ -126,6 +142,7 @@
             <button type="submit">Agregar Venta</button>
         </form>
     </div>
+
 
 
 

@@ -87,7 +87,7 @@ function obtenerTiposVehiculo2() {
         success: function (result) {
             var html = '';
             $.each(result, function (key, item) {
-                html += '<option value="' + item.Vehiculo.ID + '">' + item.Vehiculo.Nombre + '</option>';
+                html += '<option value="' + item.VehiculoID + '">' + item.Vehiculo.Nombre + '</option>';
             });
             $('#TipoVehiculoID').append(html);
         },
@@ -116,6 +116,49 @@ function obtenerCorreosUsuarios() {
     });
 }
 
+function loadVentas() {
+    fetch('/Carro/GetVentas')
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tablaVentas');
+            const tbody = tabla.querySelector('tbody');
+
+            // Clonar el elemento tbody
+            const newTbody = tbody.cloneNode(false);
+
+            // Reemplazar el tbody existente por el clon
+            tbody.parentNode.replaceChild(newTbody, tbody);
+
+            data.forEach(venta => {
+                const row = document.createElement('tr');
+
+                const clienteCell = document.createElement('td');
+                clienteCell.textContent = venta.Cliente.Correo;
+                row.appendChild(clienteCell);
+
+                const vehiculoCell = document.createElement('td');
+                vehiculoCell.textContent = venta.Vehiculo.Nombre;
+                row.appendChild(vehiculoCell);
+
+                const precioVentaCell = document.createElement('td');
+                precioVentaCell.textContent = venta.PrecioVenta;
+                row.appendChild(precioVentaCell);
+
+                const fechaVentaCell = document.createElement('td');
+                fechaVentaCell.textContent = venta.FechaVenta;
+                row.appendChild(fechaVentaCell);
+
+                const cantidadCell = document.createElement('td');
+                cantidadCell.textContent = venta.Cantidad;
+                row.appendChild(cantidadCell);
+
+                newTbody.appendChild(row);
+            });
+
+            // Agregar el nuevo tbody con las filas a la tabla
+            tabla.appendChild(newTbody);
+        });
+}
 
 
 
@@ -128,4 +171,5 @@ document.addEventListener('DOMContentLoaded', function () {
     obtenerVehiculos();
     obtenerTiposVehiculo2();
     obtenerCorreosUsuarios();
+    loadVentas();
 });

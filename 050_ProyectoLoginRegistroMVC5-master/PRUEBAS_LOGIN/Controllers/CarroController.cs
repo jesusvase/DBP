@@ -257,6 +257,51 @@ namespace PRUEBAS_LOGIN.Controllers
         }
 
 
+        public List<Ventas> ObtenerVentas()
+        {
+            List<Ventas> ventas = new List<Ventas>();
+
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                SqlCommand command = new SqlCommand("ObtenerVentas", cn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    ventas.Add(new Ventas
+                    {
+                        Cliente = new Usuario
+                        {
+                            Correo = sqlDataReader["NombreCliente"].ToString()
+                        },
+                        Vehiculo = new Vehiculo
+                        {
+                            Nombre = sqlDataReader["NombreVehiculo"].ToString(),
+                            Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("PrecioVenta"))
+                        },
+                        FechaVenta = Convert.ToDateTime(sqlDataReader["FechaVenta"]),
+                        Cantidad = Convert.ToInt32(sqlDataReader["Cantidad"])
+                    });
+                }
+
+                cn.Close();
+            }
+
+            return ventas;
+        }
+
+
+        public ActionResult GetVentas()
+        {
+            List<Ventas> ventas = ObtenerVentas();
+
+            return Json(ventas, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }
 
