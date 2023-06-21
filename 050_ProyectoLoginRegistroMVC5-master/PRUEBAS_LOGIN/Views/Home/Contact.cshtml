@@ -10,147 +10,154 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 }
 
-
-<nav class="nav justify-content-center">
-    <a href="#" class="nav-item nav-link active">Home</a>
-    <a href="#" class="nav-item nav-link">Profile</a>
-    <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
-    <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
-</nav>
-
-<div class="container">
-    <form action="@Url.Action("Registrar3","Acceso")" method="post">
-        <h3>Register Here 3</h3>
-
-        <div class="form-group row">
-            <label for="Correo" class="col-sm-2 col-form-label">Correo</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="Correo" name="Correo" placeholder="Correo" required>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="Clave" class="col-sm-2 col-form-label">Contraseña</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Contraseña" required>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="ConfirmarClave" class="col-sm-2 col-form-label">Confirmar Contraseña</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" placeholder="Confirmar Contraseña" required>
-            </div>
-        </div>
-
-        @if (ViewData["Mensaje"] != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @ViewData["Mensaje"]
-            </div>
-        }
-
-        <button type="submit" name="button">Log In</button>
-    </form>
-
-    <div>
-        <h2>Registrar Vehículo</h2>
-        <form action="@Url.Action("Registrar", "Carro")" method="post">
-            <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="Nombre" placeholder="Ingrese el nombre del vehículo" required>
-            </div>
-            <div>
-                <label for="tipoVehiculo">Tipo de Vehículo:</label>
-                <select id="tipoVehiculo" name="TipoVehiculoID"></select>
-            </div>
-            <div>
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="Precio" placeholder="Ingrese el precio del vehículo" required>
-            </div>
-            <button type="submit">Registrar</button>
-        </form>
-    </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact</title>
+    <link href="~/Content/css/pag.css" rel="stylesheet" />
+    <link href="~/Content/css/Register.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="~/Content/css/Contact.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="nav justify-content-center">
+        <a href="#" class="nav-item nav-link active">Home</a>
+        <a href="#" class="nav-item nav-link">Profile</a>
+        <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
+        <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
+    </nav>
 
     <div class="container">
-        <h1>Ventas</h1>
-        <table class="table" id="tablaVentas">
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Vehículo</th>
-                    <th>Precio de Venta</th>
-                    <th>Fecha de Venta</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+        <form action="@Url.Action("Registrar3","Acceso")" method="post">
+            <h3>Register Here 3</h3>
 
-
-    <div class="container">
-        <h1>Inventario</h1>
-        <table class="table" id="tablaInventario">
-            <thead>
-                <tr>
-                    <th>Nombre del Vehículo</th>
-                    <th>Tipo de Vehículo</th>
-                    <th>Precio</th>
-                    <th>Cantidad Disponible</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-
-    <div>
-        <h2>Añadir inventario</h2>
-        <form action="@Url.Action("RegistrarInventario", "Carro")" method="post">
-            <div>
-                <label for="vehiculo">Vehículo:</label>
-                <select id="VehiculoID" name="VehiculoID" required></select>
+            <div class="form-group row">
+                <label for="Correo" class="col-sm-2 col-form-label">Correo</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="Correo" name="Correo" placeholder="Correo" required>
+                </div>
             </div>
-            <div>
-                <label for="cantidad">Cantidad disponible:</label>
-                <input type="number" id="cantidad" name="CantidadDisponible" placeholder="Ingrese la cantidad disponible" required>
+
+            <div class="form-group row">
+                <label for="Clave" class="col-sm-2 col-form-label">Contraseña</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Contraseña" required>
+                </div>
             </div>
-            <button type="submit">Añadir</button>
+
+            <div class="form-group row">
+                <label for="ConfirmarClave" class="col-sm-2 col-form-label">Confirmar Contraseña</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" placeholder="Confirmar Contraseña" required>
+                </div>
+            </div>
+
+            @if (ViewData["Mensaje"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewData["Mensaje"]
+                </div>
+            }
+
+            <button type="submit" name="button">Log In</button>
         </form>
+
+        <div>
+            <h2>Registrar Vehículo</h2>
+            <form action="@Url.Action("Registrar", "Carro")" method="post">
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="Nombre" placeholder="Ingrese el nombre del vehículo" required>
+                </div>
+                <div>
+                    <label for="tipoVehiculo">Tipo de Vehículo:</label>
+                    <select id="tipoVehiculo" name="TipoVehiculoID"></select>
+                </div>
+                <div>
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" name="Precio" placeholder="Ingrese el precio del vehículo" required>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+
+
+        <div>
+            <h2>Añadir inventario</h2>
+            <form action="@Url.Action("RegistrarInventario", "Carro")" method="post">
+                <div>
+                    <label for="vehiculo">Vehículo:</label>
+                    <select id="VehiculoID" name="VehiculoID" required></select>
+                </div>
+                <div>
+                    <label for="cantidad">Cantidad disponible:</label>
+                    <input type="number" id="cantidad" name="CantidadDisponible" placeholder="Ingrese la cantidad disponible" required>
+                </div>
+                <button type="submit">Añadir</button>
+            </form>
+        </div>
+
+
+        <div class="container">
+            <h1>Ventas</h1>
+            <table class="table" id="tablaVentas">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Precio de Venta</th>
+                        <th>Fecha de Venta</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+        <div class="container">
+            <h1>Inventario</h1>
+            <table class="table" id="tablaInventario">
+                <thead>
+                    <tr>
+                        <th>Nombre del Vehículo</th>
+                        <th>Tipo de Vehículo</th>
+                        <th>Precio</th>
+                        <th>Cantidad Disponible</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+        <script src="/Content/images/site.js"></script>
+        <script src="~/Content/images/jquery.js"></script>
     </div>
 
-    <div>
-        <h2>Agregar Venta</h2>
-        <form action="@Url.Action("AgregarVenta", "Carro")" method="post">
-            <div>
-                <label for="cliente">Cliente:</label>
-                <select id="TipoClienteID" name="ClienteID" required></select>
-            </div>
-            <div>
-                <label for="vehiculo">Vehículo:</label>
-                <select id="TipoVehiculoID" name="VehiculoID" required></select>
-            </div>
-            <div>
-                <label for="fecha">Fecha de Venta:</label>
-                <input type="datetime-local" id="FechaVenta" name="FechaVenta" required>
-            </div>
-            <div>
-                <label for="cantidad">Cantidad:</label>
-                <input type="number" id="Cantidad" name="Cantidad" placeholder="Ingrese la cantidad" required>
-            </div>
-            <button type="submit">Agregar Venta</button>
-        </form>
-    </div>
+    <footer>
+        <div class="container">
+            <p>© 2023 Tu Empresa. Todos los derechos reservados.</p>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Acerca de</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </div>
+    </footer>
+
+
+</body>
+</html>
 
 
 
 
 
-
-
-    <script src="/Content/images/site.js"></script>
-    <script src="~/Content/images/jquery.js"></script>
 
 
 

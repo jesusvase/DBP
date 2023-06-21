@@ -164,7 +164,6 @@ namespace PRUEBAS_LOGIN.Controllers
         }
 
         /////////////////////////////////VENTAS/////////////////////////
-        ///
 
         [HttpPost]
         public ActionResult AgregarVenta(Ventas venta)
@@ -282,6 +281,12 @@ namespace PRUEBAS_LOGIN.Controllers
                             Nombre = sqlDataReader["NombreVehiculo"].ToString(),
                             Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("PrecioVenta"))
                         },
+
+                        //FechaVenta = sqlDataReader.GetDateTime(sqlDataReader.GetOrdinal("FechaVenta")),
+
+
+                        //FechaVenta = Convert.ToDateTime(sqlDataReader["FechaVenta"]).ToString("dd/MM/yyyy"),
+
                         FechaVenta = Convert.ToDateTime(sqlDataReader["FechaVenta"]),
                         Cantidad = Convert.ToInt32(sqlDataReader["Cantidad"])
                     });
