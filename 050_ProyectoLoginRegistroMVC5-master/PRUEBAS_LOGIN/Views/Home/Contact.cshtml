@@ -64,85 +64,80 @@
                 <label for="tipoVehiculo">Tipo de Vehículo:</label>
                 <select id="tipoVehiculo" name="TipoVehiculoID"></select>
             </div>
+            <div>
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="Precio" placeholder="Ingrese el precio del vehículo" required>
+            </div>
             <button type="submit">Registrar</button>
-
         </form>
     </div>
 
 
     <div class="container">
-        <table id="tablaVehiculos" class="table table-striped table-bordered">
-            <thead class="table-white">
+        <h1>Inventario</h1>
+        <table class="table" id="tablaInventario">
+            <thead>
                 <tr>
-                    <th>Nombre</th>
+                    <th>Nombre del Vehículo</th>
                     <th>Tipo de Vehículo</th>
-                    <th>Acciones</th>
+                    <th>Precio</th>
+                    <th>Cantidad Disponible</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
+
+
+    <div>
+        <h2>Añadir inventario</h2>
+        <form action="@Url.Action("RegistrarInventario", "Carro")" method="post">
+            <div>
+                <label for="vehiculo">Vehículo:</label>
+                <select id="VehiculoID" name="VehiculoID" required></select>
+            </div>
+            <div>
+                <label for="cantidad">Cantidad disponible:</label>
+                <input type="number" id="cantidad" name="CantidadDisponible" placeholder="Ingrese la cantidad disponible" required>
+            </div>
+            <button type="submit">Añadir</button>
+        </form>
+    </div>
+
+    <div>
+        <h2>Agregar Venta</h2>
+        <form action="@Url.Action("AgregarVenta", "Carro")" method="post">
+            <div>
+                <label for="cliente">Cliente:</label>
+                <select id="TipoClienteID" name="TipoClienteID" required></select>
+            </div>
+            <div>
+                <label for="vehiculo">Vehículo:</label>
+                <select id="TipoVehiculoID" name="TipoVehiculoID" required></select>
+            </div>
+            <div>
+                <label for="fecha">Fecha de Venta:</label>
+                <input type="datetime-local" id="FechaVenta" name="FechaVenta" required>
+            </div>
+            <div>
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="Cantidad" name="Cantidad" placeholder="Ingrese la cantidad" required>
+            </div>
+            <button type="submit">Agregar Venta</button>
+        </form>
+    </div>
+
+
+
+
+
 
     <script src="/Content/images/site.js"></script>
     <script src="~/Content/images/jquery.js"></script>
 
-    <script>
-        function loadVehiculos() {
-            fetch('/Carro/ObtenerVehiculosConTipos')
-                .then(response => response.json())
-                .then(data => {
-                    const tabla = document.getElementById('tablaVehiculos');
-                    const tbody = tabla.querySelector('tbody');
 
-                    // Clonar el elemento tbody
-                    const newTbody = tbody.cloneNode(false);
 
-                    // Reemplazar el tbody existente por el clon
-                    tbody.parentNode.replaceChild(newTbody, tbody);
 
-                    data.forEach(vehiculo => {
-                        const row = document.createElement('tr');
-
-                        const nombreCell = document.createElement('td');
-                        nombreCell.textContent = vehiculo.Nombre;
-                        row.appendChild(nombreCell);
-
-                        const tipoVehiculoCell = document.createElement('td');
-                        tipoVehiculoCell.textContent = vehiculo.TipoVehiculo.Nombre;
-                        row.appendChild(tipoVehiculoCell);
-
-                        const accionesCell = document.createElement('td');
-                        const updateButton = document.createElement('button');
-                        updateButton.textContent = 'Actualizar';
-                        updateButton.classList.add('btn', 'btn-primary', 'mr-2'); // Agrega la clase 'mr-2' para agregar un margen derecho
-                        updateButton.addEventListener('click', function () {
-                            mostrarFormulario(vehiculo);
-                        });
-                        accionesCell.appendChild(updateButton);
-
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Eliminar';
-                        deleteButton.classList.add('btn', 'btn-danger');
-                        deleteButton.addEventListener('click', function () {
-                            eliminarVehiculo(vehiculo);
-                        });
-                        accionesCell.appendChild(deleteButton);
-
-                        row.appendChild(accionesCell);
-
-                        newTbody.appendChild(row);
-                    });
-
-                    // Agregar el nuevo tbody con las filas a la tabla
-                    tabla.appendChild(newTbody);
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            loadVehiculos()
-        });
-    </script>
 
 
 

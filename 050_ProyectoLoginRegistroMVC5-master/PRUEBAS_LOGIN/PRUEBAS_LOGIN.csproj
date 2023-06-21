@@ -126,10 +126,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inventario.cs" />
     <Compile Include="Models\Vehiculo.cs" />
-    <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\TipoVehiculo.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Ventas.cs" />
     <Compile Include="Permisos\ValidarSesionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
