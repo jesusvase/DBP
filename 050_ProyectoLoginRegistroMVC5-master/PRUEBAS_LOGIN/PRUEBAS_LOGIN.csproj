@@ -134,6 +134,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Inventario.cs" />
+    <Compile Include="Models\ServicioMantenimiento.cs" />
+    <Compile Include="Models\TipoMantenimiento.cs" />
     <Compile Include="Models\Vehiculo.cs" />
     <Compile Include="Models\TipoVehiculo.cs" />
     <Compile Include="Models\Usuario.cs" />

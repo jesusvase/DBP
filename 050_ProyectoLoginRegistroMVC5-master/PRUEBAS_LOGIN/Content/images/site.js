@@ -212,9 +212,89 @@ function loadVentasPorCliente() {
 }
 
 
+function loadServiciosMantenimiento() {
+    fetch('/Carro/GetServicioMantenimiento')
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tablaServiciosMantenimiento');
+            const tbody = tabla.querySelector('tbody');
+
+            // Clonar el elemento tbody
+            const newTbody = tbody.cloneNode(false);
+
+            // Reemplazar el tbody existente por el clon
+            tbody.parentNode.replaceChild(newTbody, tbody);
+
+            data.forEach(servicio => {
+                const row = document.createElement('tr');
+
+                const usuarioCell = document.createElement('td');
+                usuarioCell.textContent = servicio.Usuario.Correo;
+                row.appendChild(usuarioCell);
+
+                const vehiculoCell = document.createElement('td');
+                vehiculoCell.textContent = servicio.Vehiculo.Nombre;
+                row.appendChild(vehiculoCell);
+
+                const precioCell = document.createElement('td');
+                precioCell.textContent = servicio.Precio;
+                row.appendChild(precioCell);
+
+                const descripcionCell = document.createElement('td');
+                descripcionCell.textContent = servicio.Descripcion;
+                row.appendChild(descripcionCell);
+
+                const tipoMantenimientoCell = document.createElement('td');
+                tipoMantenimientoCell.textContent = servicio.TipoMantenimiento.Nombre;
+                row.appendChild(tipoMantenimientoCell);
+
+                newTbody.appendChild(row);
+            });
+
+            // Agregar el nuevo tbody con las filas a la tabla
+            tabla.appendChild(newTbody);
+        });
+}
 
 
 
+function obtenerVehiculos2() {
+    $.ajax({
+        url: "/Carro/GetVehiculos",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            var html = '';
+            $.each(result, function (key, item) {
+                html += '<option value="' + item.ID + '">' + item.Nombre + '</option>';
+            });
+            $('#VehiculoID2').append(html);
+        },
+        error: function (errorMessage) {
+            alert(errorMessage.responseText);
+        }
+    });
+}
+
+function obtenerTipoMantenimientos() {
+    $.ajax({
+        url: "/Carro/GetTiposMantenimiento",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            var html = '';
+            $.each(result, function (key, item) {
+                html += '<option value="' + item.Id + '">' + item.Nombre + '</option>';
+            });
+            $('#TipoMantenimiento').append(html);
+        },
+        error: function (errorMessage) {
+            alert(errorMessage.responseText);
+        }
+    });
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -225,4 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
     obtenerCorreosUsuarios();
     loadVentas();
     loadVentasPorCliente();
+    loadServiciosMantenimiento();
+    obtenerVehiculos2();
+    obtenerTipoMantenimientos();
 });
