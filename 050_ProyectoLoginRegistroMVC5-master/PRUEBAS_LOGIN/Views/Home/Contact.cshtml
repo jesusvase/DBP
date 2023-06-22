@@ -168,6 +168,44 @@
             </table>
         </div>
 
+        <div class="container">
+            <h1>Servicios de Mantenimiento</h1>
+            <table class="table" id="tablaServiciosMantenimiento">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Vehículo</th>
+                        <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Tipo de Mantenimiento</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+        <div>
+            <h2>Registrar Servicio</h2>
+            <form action="@Url.Action("AgregarServicioMantenimiento", "Carro")" method="post">
+                <div>
+                    <label for="vehiculo">Vehículo:</label>
+                    <select id="VehiculoID2" name="IdVehiculo" required></select>
+                </div>
+                <div>
+                    <label for="cantidad">Tipo de mantenimiento</label>
+                    <select id="TipoMantenimiento" name="IdTipoMantenimiento" required></select>
+                </div>
+                <div>
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="Descripcion" placeholder="Ingrese una descripción"></textarea>
+                </div>
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+
+
+
 
 
         <script src="/Content/images/site.js"></script>

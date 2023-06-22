@@ -411,6 +411,114 @@ namespace PRUEBAS_LOGIN.Controllers
             return Json(ventas, JsonRequestBehavior.AllowGet);
         }
 
+        //////////////////////////////////MANTENIMIENTO//////////////////
+        ///
+        public List<ServicioMantenimiento> GetServiciosMantenimiento()
+        {
+            List<ServicioMantenimiento> servicios = new List<ServicioMantenimiento>();
+
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                SqlCommand command = new SqlCommand("MostrarServicioMantenimiento", cn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    servicios.Add(new ServicioMantenimiento
+                    {
+                        Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio")),
+                        Descripcion = sqlDataReader["Descripcion"].ToString(),
+
+                        // Obtener el nombre de usuario
+                        Usuario = new Usuario
+                        {
+                            Correo = sqlDataReader["Usuario"].ToString() // Utilizar el nombre de columna correcto: "Usuario"
+                        },
+
+                        // Obtener el nombre del vehículo
+                        Vehiculo = new Vehiculo
+                        {
+                            Nombre = sqlDataReader["Vehiculo"].ToString() // Utilizar el nombre de columna correcto: "Vehiculo"
+                        },
+
+                        // Obtener el nombre del tipo de mantenimiento
+                        TipoMantenimiento = new TipoMantenimiento
+                        {
+                            Nombre = sqlDataReader["TipoMantenimiento"].ToString() // Utilizar el nombre de columna correcto: "TipoMantenimiento"
+                        }
+                    });
+                }
+
+                cn.Close();
+            }
+
+            return servicios;
+        }
+
+
+        public ActionResult GetServicioMantenimiento()
+        {
+            List<ServicioMantenimiento> servicios = GetServiciosMantenimiento();
+
+            return Json(servicios, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult AgregarServicioMantenimiento(ServicioMantenimiento servicio)
+        {
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                int idUsuario = (int)Session["IdUsuario"];
+                SqlCommand cmd = new SqlCommand("AgregarServicioMantenimiento", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@IdVehiculo", servicio.IdVehiculo);
+                cmd.Parameters.AddWithValue("@IdTipoMantenimiento", servicio.IdTipoMantenimiento);
+                cmd.Parameters.AddWithValue("@Descripcion", servicio.Descripcion);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    // Servicio de mantenimiento agregado correctamente
+                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                }
+                catch (SqlException ex)
+                {
+                    // Ocurrió un error al agregar el servicio de mantenimiento
+                    ViewBag.ErrorMessage = "Ocurrió un error al agregar el servicio de mantenimiento: " + ex.Message;
+                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                }
+            }
+        }
+
+        public JsonResult GetTiposMantenimiento()
+        {
+            List<TipoMantenimiento> tiposMantenimiento = new List<TipoMantenimiento>();
+
+            using (SqlConnection connection = new SqlConnection(cadena))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("ObtenerTiposMantenimiento", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    tiposMantenimiento.Add(new TipoMantenimiento
+                    {
+                        Id = Convert.ToInt32(sqlDataReader["Id"]),
+                        Nombre = sqlDataReader["Nombre"].ToString()
+                    });
+                }
+
+                connection.Close();
+            }
+
+            return Json(tiposMantenimiento, JsonRequestBehavior.AllowGet);
+        }
     }
 }
 
