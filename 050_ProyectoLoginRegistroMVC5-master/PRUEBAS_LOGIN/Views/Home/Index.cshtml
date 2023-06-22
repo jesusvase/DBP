@@ -77,25 +77,45 @@
         </form>
     </div>
 
-
-        <div class="container">
-            <h1>Inventario</h1>
-            <table class="table" id="tablaInventario">
-                <thead>
-                    <tr>
-                        <th>Nombre del Vehículo</th>
-                        <th>Tipo de Vehículo</th>
-                        <th>Precio</th>
-                        <th>Cantidad Disponible</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    
 
 
-        <script src="/Content/images/site.js"></script>
-        <script src="~/Content/images/jquery.js"></script>
+    <div class="container">
+        <h1>Inventario</h1>
+        <table class="table" id="tablaInventario">
+            <thead>
+                <tr>
+                    <th>Nombre del Vehículo</th>
+                    <th>Tipo de Vehículo</th>
+                    <th>Precio</th>
+                    <th>Cantidad Disponible</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <a href="@Url.Action("GenerarReportePDF", "Carro")" class="btn btn-primary">Generar Reporte</a>
+        </table>
+    </div>
+
+
+    <div class="container">
+        <h1>Historial de compras</h1>
+        <table class="table" id="tablaVentasPorCliente">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Fecha de Venta</th>
+                    <th>Precio de Venta</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+    <script src="/Content/images/site.js"></script>
+    <script src="~/Content/images/jquery.js"></script>
 
     <footer>
         <div class="footer-top">

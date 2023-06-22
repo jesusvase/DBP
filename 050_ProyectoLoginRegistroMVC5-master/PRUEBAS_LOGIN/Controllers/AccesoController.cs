@@ -15,6 +15,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 
+
 namespace PRUEBAS_LOGIN.Controllers
 {
     public class AccesoController : Controller
@@ -385,8 +386,11 @@ namespace PRUEBAS_LOGIN.Controllers
             return resultToReturn;
 
         }
-        /////////////////////////////////////////////////CARRO////////////////
-        public ActionResult RegistrarVehiculo(Vehiculo vehiculo)
+
+
+
+    /////////////////////////////////////////////////CARRO////////////////
+    public ActionResult RegistrarVehiculo(Vehiculo vehiculo)
         {
 
             using (SqlConnection cn = new SqlConnection(cadena))

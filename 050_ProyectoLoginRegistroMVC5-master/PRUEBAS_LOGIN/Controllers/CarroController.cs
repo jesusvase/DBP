@@ -14,6 +14,8 @@ using System.IO;
 
 using System.Drawing;
 using System.Drawing.Imaging;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace PRUEBAS_LOGIN.Controllers
 {
@@ -161,6 +163,55 @@ namespace PRUEBAS_LOGIN.Controllers
             }
 
             return RedirectToAction("Contact", "Home");
+        }
+
+
+        // Reporte //
+
+
+
+        public ActionResult GenerarReportePDF()
+        {
+            List<Inventario> inventario = ObtenerInventario();
+
+            // Crear el documento PDF
+            Document document = new Document();
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            // Crear una tabla en el documento PDF
+            PdfPTable table = new PdfPTable(4); // 4 columnas en tu tabla
+            table.WidthPercentage = 100; // Ancho de la tabla al 100% del documento
+
+            // Agregar las cabeceras de las columnas
+            table.AddCell("Nombre del Vehículo");
+            table.AddCell("Tipo de Vehículo");
+            table.AddCell("Precio");
+            table.AddCell("Cantidad Disponible");
+
+            // Agregar los datos de la tabla
+            foreach (var item in inventario)
+            {
+                table.AddCell(item.Vehiculo.Nombre);
+                table.AddCell(item.Vehiculo.TipoVehiculo.Nombre);
+                table.AddCell(item.Vehiculo.Precio.ToString());
+                table.AddCell(item.CantidadDisponible.ToString());
+            }
+
+            // Agregar la tabla al documento
+            document.Add(table);
+
+            // Cerrar el documento
+            document.Close();
+
+            // Descargar el archivo PDF generado
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=Reporte.pdf");
+            Response.BinaryWrite(memoryStream.ToArray());
+            Response.End();
+
+            return null;
         }
 
         /////////////////////////////////VENTAS/////////////////////////
