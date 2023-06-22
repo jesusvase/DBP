@@ -1,8 +1,35 @@
 /* Estilos generales */
+
+/* Navbar */
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #005da4;
+    padding: 10px;
+}
+
+    .navbar a {
+        text-decoration: none;
+        color: #333;
+        margin: 0 10px;
+    }
+
+        .navbar a:hover {
+            color: #007bff;
+        }
+
+        .navbar a.active {
+            font-weight: bold;
+        }
+
+
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #005da4;
 }
 
 .container {
@@ -51,39 +78,59 @@ button[type="submit"] {
 
 
 /* Estilos del footer */
+
 footer {
-    background-color: #f2f2f2;
-    padding: 20px;
-    text-align: center;
+    background-color: #222222;
+    padding: 60px 0px;
 }
-
-    footer .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    footer p {
-        margin: 0;
-    }
 
     footer ul {
         list-style: none;
-        padding: 0;
-        margin: 0;
+        margin: 0 auto;
+        display: inline-block;
+        padding-top: 50px;
     }
 
         footer ul li {
-            display: inline-block;
-            margin-right: 10px;
+            float: left;
         }
 
             footer ul li a {
-                text-decoration: none;
-                color: #000;
+                color: #b1aca1;
+                padding: 20px;
             }
 
                 footer ul li a:hover {
-                    color: #007bff;
+                    color: #7dabdb;
+                    text-decoration: none;
                 }
+
+.footer-top {
+    padding-bottom: 50px;
+}
+
+    .footer-top .fa {
+        font-size: 18px;
+        color: #FFF;
+        padding-right: 10px;
+    }
+
+    .footer-top a {
+        color: #FFF;
+        text-decoration: none;
+    }
+
+    .footer-top .col-lg-2:hover .fa,
+    .footer-top .col-lg-2:hover a {
+        color: #7dabdb;
+    }
+
+.copyright {
+    background-color: #f0f0f0;
+}
+
+    .copyright p {
+        font-size: 12px;
+        padding: 15px 0 10px 0;
+    }
 

@@ -13,9 +13,28 @@
     <title>Contact</title>
     <link href="styles.css" rel="stylesheet" />
     <link href="~/Content/css/Index.css" rel="stylesheet" />
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #00c0f3;
+        }
+
+        table {
+            background-color: #fff;
+        }
+    </style>
+
+
+
 </head>
 <body>
-    <nav class="nav justify-content-center">
+    <nav class="navbar justify-content-center">
         <a href="#" class="nav-item nav-link active">Home</a>
         <a href="#" class="nav-item nav-link">Profile</a>
         <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
@@ -58,18 +77,88 @@
         </form>
     </div>
 
-    <footer>
+
         <div class="container">
-            <p>© 2023 Tu Empresa. Todos los derechos reservados.</p>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Acerca de</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
+            <h1>Inventario</h1>
+            <table class="table" id="tablaInventario">
+                <thead>
+                    <tr>
+                        <th>Nombre del Vehículo</th>
+                        <th>Tipo de Vehículo</th>
+                        <th>Precio</th>
+                        <th>Cantidad Disponible</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+        <script src="/Content/images/site.js"></script>
+        <script src="~/Content/images/jquery.js"></script>
+
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-facebook fa-2x"></i>Facebook</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-twitter fa-2x"></i>Twitter</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-flickr fa-2x"></i>Flickr</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-tumblr fa-2x"></i>Tumblr</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-github fa-2x"></i>Github</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-google-plus fa-2x"></i>Google</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="border-top:1px solid grey;">
+            <div class="row text-center">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <ul class="menu">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+
+                        <li>
+                            <a href="#">About</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Blog</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Gallery</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </footer>
 
+
+    <div class="container text-center">
+        <!-- Agrega la clase "text-center" para centrar el contenido -->
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright © 2023 All rights reserved</p>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
