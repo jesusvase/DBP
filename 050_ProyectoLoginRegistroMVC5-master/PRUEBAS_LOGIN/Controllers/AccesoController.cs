@@ -245,6 +245,9 @@ namespace PRUEBAS_LOGIN.Controllers
                         {
                             oUsuario.IdUsuario = Convert.ToInt32(reader["IdUsuario"]);
                             oUsuario.Tipo = Convert.ToInt32(reader["Tipo"]);
+
+                            // Guardar el ID del usuario en la sesión
+                            Session["IdUsuario"] = oUsuario.IdUsuario;
                         }
                         else
                         {

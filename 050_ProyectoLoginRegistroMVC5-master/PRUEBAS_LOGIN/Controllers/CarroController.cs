@@ -171,14 +171,14 @@ namespace PRUEBAS_LOGIN.Controllers
             using (SqlConnection cn = new SqlConnection(cadena))
             {
                 cn.Open();
-
+                int idUsuario = (int)Session["IdUsuario"];
                 SqlCommand cmd = new SqlCommand("AgregarVenta", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@ClienteID", venta.ClienteID);
                 cmd.Parameters.AddWithValue("@VehiculoID", venta.VehiculoID);
                 cmd.Parameters.AddWithValue("@Cantidad", venta.Cantidad);
                 cmd.Parameters.AddWithValue("@FechaVenta", venta.FechaVenta);
-
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
                 try
                 {
                     cmd.ExecuteNonQuery();
@@ -272,6 +272,10 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     ventas.Add(new Ventas
                     {
+                        Cliente2 = new Usuario
+                        {
+                            Correo = sqlDataReader["NombreUsuario"].ToString()
+                        },
                         Cliente = new Usuario
                         {
                             Correo = sqlDataReader["NombreCliente"].ToString()
@@ -289,6 +293,8 @@ namespace PRUEBAS_LOGIN.Controllers
 
                         FechaVenta = Convert.ToDateTime(sqlDataReader["FechaVenta"]),
                         Cantidad = Convert.ToInt32(sqlDataReader["Cantidad"])
+
+                        
                     });
                 }
 
@@ -306,6 +312,53 @@ namespace PRUEBAS_LOGIN.Controllers
             return Json(ventas, JsonRequestBehavior.AllowGet);
         }
 
+        public List<Ventas> GetVentasPorCliente()
+        {
+            List<Ventas> ventas = new List<Ventas>();
+
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                int idUsuario = (int)Session["IdUsuario"];
+                SqlCommand command = new SqlCommand("ObtenerComprasPorCliente", cn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@ClienteID", idUsuario);
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    ventas.Add(new Ventas
+                    {
+                        Cliente = new Usuario
+                        {
+                            Correo = sqlDataReader["NombreCliente"].ToString()
+                        },
+                        Vehiculo = new Vehiculo
+                        {
+                            Nombre = sqlDataReader["NombreVehiculo"].ToString(),
+                            Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("PrecioVenta"))
+                        },
+
+                        FechaVenta = Convert.ToDateTime(sqlDataReader["FechaVenta"]),
+                        Cantidad = Convert.ToInt32(sqlDataReader["Cantidad"])
+
+
+                    });
+                }
+
+                cn.Close();
+            }
+
+            return ventas;
+        }
+
+        public ActionResult GetVentasCliente()
+        {
+            List<Ventas> ventas = GetVentasPorCliente();
+
+            return Json(ventas, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

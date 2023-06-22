@@ -141,16 +141,23 @@ function loadVentas() {
                 row.appendChild(vehiculoCell);
 
                 const precioVentaCell = document.createElement('td');
-                precioVentaCell.textContent = venta.PrecioVenta;
+                precioVentaCell.textContent = venta.Vehiculo.Precio;
                 row.appendChild(precioVentaCell);
 
                 const fechaVentaCell = document.createElement('td');
-                fechaVentaCell.textContent = venta.FechaVenta;
+                const fechaVenta = new Date(parseInt(venta.FechaVenta.substr(6))); // Convertir a milisegundos
+                const formattedDate = `${fechaVenta.getDate()}/${fechaVenta.getMonth() + 1}/${fechaVenta.getFullYear()}`;
+                const formattedTime = `${fechaVenta.getHours().toString().padStart(2, '0')}:${fechaVenta.getMinutes().toString().padStart(2, '0')}`;
+                fechaVentaCell.textContent = `${formattedDate} ${formattedTime}`;
                 row.appendChild(fechaVentaCell);
 
                 const cantidadCell = document.createElement('td');
                 cantidadCell.textContent = venta.Cantidad;
                 row.appendChild(cantidadCell);
+
+                const idUsuarioCell = document.createElement('td');
+                idUsuarioCell.textContent = venta.Cliente2.Correo; // Utilizar el campo IdUsuario del cliente
+                row.appendChild(idUsuarioCell);
 
                 newTbody.appendChild(row);
             });
@@ -159,6 +166,51 @@ function loadVentas() {
             tabla.appendChild(newTbody);
         });
 }
+
+
+function loadVentasPorCliente() {
+    fetch('/Carro/GetVentasCliente')
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tablaVentasPorCliente');
+            const tbody = tabla.querySelector('tbody');
+
+            // Eliminar filas existentes
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+
+            data.forEach(venta => {
+                const row = document.createElement('tr');
+
+                const clienteCell = document.createElement('td');
+                clienteCell.textContent = venta.Cliente.Correo;
+                row.appendChild(clienteCell);
+
+                const vehiculoCell = document.createElement('td');
+                vehiculoCell.textContent = venta.Vehiculo.Nombre;
+                row.appendChild(vehiculoCell);
+
+                const fechaVentaCell = document.createElement('td');
+                const fechaVenta = new Date(parseInt(venta.FechaVenta.substr(6))); // Convertir a milisegundos
+                const formattedDate = `${fechaVenta.getDate()}/${fechaVenta.getMonth() + 1}/${fechaVenta.getFullYear()}`;
+                const formattedTime = `${fechaVenta.getHours().toString().padStart(2, '0')}:${fechaVenta.getMinutes().toString().padStart(2, '0')}`;
+                fechaVentaCell.textContent = `${formattedDate} ${formattedTime}`;
+                row.appendChild(fechaVentaCell);
+
+                const precioVentaCell = document.createElement('td');
+                precioVentaCell.textContent = venta.Vehiculo.Precio;
+                row.appendChild(precioVentaCell);
+
+                const cantidadCell = document.createElement('td');
+                cantidadCell.textContent = venta.Cantidad;
+                row.appendChild(cantidadCell);
+
+                tbody.appendChild(row);
+            });
+        });
+}
+
 
 
 
@@ -172,4 +224,5 @@ document.addEventListener('DOMContentLoaded', function () {
     obtenerTiposVehiculo2();
     obtenerCorreosUsuarios();
     loadVentas();
+    loadVentasPorCliente();
 });
