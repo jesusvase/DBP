@@ -136,13 +136,14 @@
     <Compile Include="Controllers\CarroController.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\VentasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Inventario.cs" />
     <Compile Include="Models\ServicioMantenimiento.cs" />
+    <Compile Include="Models\ServicioRepuesto.cs" />
     <Compile Include="Models\TipoMantenimiento.cs" />
+    <Compile Include="Models\TipoRepuesto.cs" />
     <Compile Include="Models\Vehiculo.cs" />
     <Compile Include="Models\TipoVehiculo.cs" />
     <Compile Include="Models\Usuario.cs" />

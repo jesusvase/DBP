@@ -296,6 +296,49 @@ function obtenerTipoMantenimientos() {
     });
 }
 
+// Repuestos //
+
+function obtenerTiposRepuesto() {
+    $.ajax({
+        url: "/Carro/GetTiposRepuesto",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            var html = '';
+            $.each(result, function (key, item) {
+                html += '<option value="' + item.Id + '">' + item.Nombre + '</option>';
+            });
+            $('#TipoRepuesto').append(html);
+        },
+        error: function (errorMessage) {
+            alert(errorMessage.responseText);
+        }
+    });
+}
+
+
+function obtenerVehiculos3() {
+    $.ajax({
+        url: "/Carro/GetVehiculos",
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            var html = '';
+            $.each(result, function (key, item) {
+                html += '<option value="' + item.ID + '">' + item.Nombre + '</option>';
+            });
+            $('#VehiculoID3').append(html);
+        },
+        error: function (errorMessage) {
+            alert(errorMessage.responseText);
+        }
+    });
+}
+
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     obtenerTiposVehiculo();
@@ -308,4 +351,6 @@ document.addEventListener('DOMContentLoaded', function () {
     loadServiciosMantenimiento();
     obtenerVehiculos2();
     obtenerTipoMantenimientos();
+    obtenerTiposRepuesto();
+    obtenerVehiculos3();
 });

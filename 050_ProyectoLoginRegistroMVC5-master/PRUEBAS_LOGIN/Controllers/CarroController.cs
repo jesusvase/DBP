@@ -519,6 +519,125 @@ namespace PRUEBAS_LOGIN.Controllers
 
             return Json(tiposMantenimiento, JsonRequestBehavior.AllowGet);
         }
+
+        //////// Servivio Repuesto ///////////
+
+        // Get // 
+
+
+        public List<ServicioRespuesto> GetServiciosRespuesto()
+        {
+            List<ServicioRespuesto> servicios = new List<ServicioRespuesto>();
+
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                SqlCommand command = new SqlCommand("MostrarServicioRespuesto", cn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    servicios.Add(new ServicioRespuesto
+                    {
+                        Id = Convert.ToInt32(sqlDataReader["Id"]),
+                        Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio")),
+                        IdUsuario = Convert.ToInt32(sqlDataReader["IdUsuario"]),
+                        IdVehiculo = Convert.ToInt32(sqlDataReader["IdVehiculo"]),
+                        Descripcion = sqlDataReader["Descripcion"].ToString(),
+                        IdTipoRepuesto = Convert.ToInt32(sqlDataReader["IdTipoRepuesto"]),
+                        Usuario = new Usuario
+                        {
+                            // Obtener propiedades del usuario si están disponibles en el resultado de la consulta
+                            Correo = sqlDataReader["Usuario"].ToString() // Utilizar el nombre de columna correcto: "Usuario"
+                        },
+                        Vehiculo = new Vehiculo
+                        {
+                            // Obtener propiedades del vehículo si están disponibles en el resultado de la consulta
+                            Nombre = sqlDataReader["Vehiculo"].ToString() // Utilizar el nombre de columna correcto: "Vehiculo"
+                        },
+                        TipoRepuesto = new TipoRepuesto
+                        {
+                            // Obtener propiedades del tipo de repuesto si están disponibles en el resultado de la consulta
+                            Nombre = sqlDataReader["TipoRepuesto"].ToString() // Utilizar el nombre de columna correcto: "TipoRepuesto"
+                        }
+                    });
+                }
+
+                cn.Close();
+            }
+
+            return servicios;
+        }
+
+
+        public ActionResult GetServicioRepuesto()
+        {
+            List<ServicioRespuesto> servicios = GetServiciosRespuesto();
+
+            return Json(servicios, JsonRequestBehavior.AllowGet);
+        }
+
+
+        // Insert //
+        [HttpPost]
+        public ActionResult AgregarServicioRepuesto(ServicioRespuesto servicio)
+        {
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                int idUsuario = (int)Session["IdUsuario"];
+                SqlCommand cmd = new SqlCommand("AgregarServicioRespuesto", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@IdVehiculo", servicio.IdVehiculo);
+                cmd.Parameters.AddWithValue("@IdTipoRepuesto", servicio.IdTipoRepuesto);
+                cmd.Parameters.AddWithValue("@Descripcion", servicio.Descripcion);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    // Servicio de repuesto agregado correctamente
+                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                }
+                catch (SqlException ex)
+                {
+                    // Ocurrió un error al agregar el servicio de repuesto
+                    ViewBag.ErrorMessage = "Ocurrió un error al agregar el servicio de repuesto: " + ex.Message;
+                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                }
+            }
+        }
+
+
+        // Get Tipos Repuesto //
+
+        public JsonResult GetTiposRepuesto()
+        {
+            List<TipoRepuesto> tiposRepuesto = new List<TipoRepuesto>();
+
+            using (SqlConnection connection = new SqlConnection(cadena))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("ObtenerTiposRepuesto", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    tiposRepuesto.Add(new TipoRepuesto
+                    {
+                        Id = Convert.ToInt32(sqlDataReader["Id"]),
+                        Nombre = sqlDataReader["Nombre"].ToString()
+                    });
+                }
+
+                connection.Close();
+            }
+
+            return Json(tiposRepuesto, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
 

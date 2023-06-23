@@ -205,6 +205,31 @@
         </div>
 
 
+        <div>
+            <h2>Registrar Servicio de Repuesto</h2>
+            <form action="@Url.Action("AgregarServicioRepuesto", "Carro")" method="post">
+                <div>
+                    <label for="vehiculo">Vehículo:</label>
+                    <select id="VehiculoID3" name="IdVehiculo" required>
+                        <!-- Aquí puedes cargar dinámicamente las opciones del select con los vehículos disponibles -->
+                    </select>
+                </div>
+                <div>
+                    <label for="tipoRepuesto">Tipo de repuesto:</label>
+                    <select id="TipoRepuesto" name="IdTipoRepuesto" required>
+                        <!-- Aquí puedes cargar dinámicamente las opciones del select con los tipos de repuesto disponibles -->
+                    </select>
+                </div>
+                <div>
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="Descripcion" placeholder="Ingrese una descripción"></textarea>
+                </div>
+                <button type="submit">Agregar</button>
+            </form>
+        </div>
+
+
+
 
 
 
