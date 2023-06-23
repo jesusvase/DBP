@@ -215,6 +215,56 @@ namespace PRUEBAS_LOGIN.Controllers
             return null;
         }
 
+
+        // Reporte2 // 
+
+        public ActionResult GenerarReportePDF2()
+        {
+            List<Ventas> ventas = ObtenerVentas();
+
+            // Crear el documento PDF
+            Document document = new Document();
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            // Crear una tabla en el documento PDF
+            PdfPTable table = new PdfPTable(5); // 5 columnas en tu tabla
+            table.WidthPercentage = 100; // Ancho de la tabla al 100% del documento
+
+            // Agregar las cabeceras de las columnas
+            table.AddCell("Cliente");
+            table.AddCell("Vehículo");
+            table.AddCell("Fecha de Venta");
+            table.AddCell("Precio de Venta");
+            table.AddCell("Cantidad");
+
+            // Agregar los datos de la tabla
+            foreach (var venta in ventas)
+            {
+                table.AddCell(venta.Cliente.Correo);
+                table.AddCell(venta.Vehiculo.Nombre);
+                table.AddCell(venta.FechaVenta.ToString("dd/MM/yyyy"));
+                table.AddCell(venta.Vehiculo.Precio.ToString());
+                table.AddCell(venta.Cantidad.ToString());
+            }
+
+            // Agregar la tabla al documento
+            document.Add(table);
+
+            // Cerrar el documento
+            document.Close();
+
+            // Descargar el archivo PDF generado
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=Reporte.pdf");
+            Response.BinaryWrite(memoryStream.ToArray());
+            Response.End();
+
+            return null;
+        }
+
+
         /////////////////////////////////VENTAS/////////////////////////
 
         [HttpPost]
