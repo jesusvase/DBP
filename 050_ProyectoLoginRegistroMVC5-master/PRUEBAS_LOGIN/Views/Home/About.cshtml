@@ -242,40 +242,52 @@
         const claveInput = document.getElementById('clave');
         const tipoInput = document.getElementById('tipo');
 
+        // Guardar la información del usuario en atributos personalizados
+        form.setAttribute('data-idusuario', usuario.IdUsuario);
         correoInput.value = usuario.Correo;
         claveInput.value = '';
         tipoInput.value = usuario.Tipo;
 
         formContainer.style.display = 'block';
-
-        document.getElementById('updateButton').addEventListener('click', function () {
-            const updatedCorreo = correoInput.value;
-            const updatedClave = claveInput.value;
-            const updatedTipo = tipoInput.value;
-
-            fetch('/Acceso/UpdateUsuario', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    IdUsuario: usuario.IdUsuario,
-                    Correo: updatedCorreo,
-                    Clave: updatedClave,
-                    Tipo: updatedTipo
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    formContainer.style.display = 'none';
-                    loadUsuarios();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        });
-
     }
+
+    document.getElementById('updateButton').addEventListener('click', function () {
+        const form = document.getElementById('updateForm');
+
+        // Obtener la información del usuario de los atributos personalizados
+        const idUsuario = form.getAttribute('data-idusuario');
+        const correoInput = document.getElementById('correo');
+        const claveInput = document.getElementById('clave');
+        const tipoInput = document.getElementById('tipo');
+
+        const updatedCorreo = correoInput.value;
+        const updatedClave = claveInput.value;
+        const updatedTipo = tipoInput.value;
+
+        fetch('/Acceso/UpdateUsuario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                IdUsuario: idUsuario,
+                Correo: updatedCorreo,
+                Clave: updatedClave,
+                Tipo: updatedTipo
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const formContainer = document.getElementById('formContainer');
+                formContainer.style.display = 'none';
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+
+
+
 
     function eliminarUsuario(usuario) {
         if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {

@@ -120,6 +120,7 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     inventario.Add(new Inventario
                     {
+                        ID= Convert.ToInt32(sqlDataReader["ID"]),
                         Vehiculo = new Vehiculo
                         {
                             Nombre = sqlDataReader["NombreVehiculo"].ToString(),
@@ -323,6 +324,7 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     ventas.Add(new Ventas
                     {
+                        ID = Convert.ToInt32(sqlDataReader["ID"]),
                         Cliente2 = new Usuario
                         {
                             Correo = sqlDataReader["NombreUsuario"].ToString()
@@ -429,6 +431,7 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     servicios.Add(new ServicioMantenimiento
                     {
+                        Id = Convert.ToInt32(sqlDataReader["Id"]),
                         Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio")),
                         Descripcion = sqlDataReader["Descripcion"].ToString(),
 
@@ -525,44 +528,41 @@ namespace PRUEBAS_LOGIN.Controllers
         // Get // 
 
 
-        public List<ServicioRespuesto> GetServiciosRespuesto()
+        public List<ServicioRespuesto> GetServiciosRepuesto()
         {
             List<ServicioRespuesto> servicios = new List<ServicioRespuesto>();
 
             using (SqlConnection cn = new SqlConnection(cadena))
             {
                 cn.Open();
-                SqlCommand command = new SqlCommand("MostrarServicioRespuesto", cn);
+                SqlCommand command = new SqlCommand("ObtenerServicioRepuestos", cn);
                 command.CommandType = CommandType.StoredProcedure;
 
                 SqlDataReader sqlDataReader = command.ExecuteReader();
 
                 while (sqlDataReader.Read())
                 {
-                    servicios.Add(new ServicioRespuesto
-                    {
-                        Id = Convert.ToInt32(sqlDataReader["Id"]),
-                        Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio")),
-                        IdUsuario = Convert.ToInt32(sqlDataReader["IdUsuario"]),
-                        IdVehiculo = Convert.ToInt32(sqlDataReader["IdVehiculo"]),
-                        Descripcion = sqlDataReader["Descripcion"].ToString(),
-                        IdTipoRepuesto = Convert.ToInt32(sqlDataReader["IdTipoRepuesto"]),
-                        Usuario = new Usuario
-                        {
-                            // Obtener propiedades del usuario si están disponibles en el resultado de la consulta
-                            Correo = sqlDataReader["Usuario"].ToString() // Utilizar el nombre de columna correcto: "Usuario"
-                        },
-                        Vehiculo = new Vehiculo
-                        {
-                            // Obtener propiedades del vehículo si están disponibles en el resultado de la consulta
-                            Nombre = sqlDataReader["Vehiculo"].ToString() // Utilizar el nombre de columna correcto: "Vehiculo"
-                        },
-                        TipoRepuesto = new TipoRepuesto
-                        {
-                            // Obtener propiedades del tipo de repuesto si están disponibles en el resultado de la consulta
-                            Nombre = sqlDataReader["TipoRepuesto"].ToString() // Utilizar el nombre de columna correcto: "TipoRepuesto"
-                        }
-                    });
+                    ServicioRespuesto servicio = new ServicioRespuesto();
+                    servicio.Id = Convert.ToInt32(sqlDataReader["Id"]);
+                    servicio.Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio"));
+                    servicio.Descripcion = sqlDataReader["Descripcion"].ToString();
+
+                    Usuario usuario = new Usuario();
+                    usuario.Correo = sqlDataReader["NombreUsuario"].ToString();
+                    servicio.Usuario = usuario;
+
+                    usuario.IdUsuario = Convert.ToInt32(sqlDataReader["IdUsuario"]);
+                    servicio.Usuario = usuario;
+
+                    Vehiculo vehiculo = new Vehiculo();
+                    vehiculo.Nombre = sqlDataReader["NombreVehiculo"].ToString();
+                    servicio.Vehiculo = vehiculo;
+
+                    TipoRepuesto tipoRepuesto = new TipoRepuesto();
+                    tipoRepuesto.Nombre = sqlDataReader["TipoRepuesto"].ToString();
+                    servicio.TipoRepuesto = tipoRepuesto;
+
+                    servicios.Add(servicio);
                 }
 
                 cn.Close();
@@ -572,12 +572,16 @@ namespace PRUEBAS_LOGIN.Controllers
         }
 
 
+
+
         public ActionResult GetServicioRepuesto()
         {
-            List<ServicioRespuesto> servicios = GetServiciosRespuesto();
+            List<ServicioRespuesto> servicios = GetServiciosRepuesto();
 
             return Json(servicios, JsonRequestBehavior.AllowGet);
         }
+
+
 
 
         // Insert //
@@ -636,6 +640,147 @@ namespace PRUEBAS_LOGIN.Controllers
             }
 
             return Json(tiposRepuesto, JsonRequestBehavior.AllowGet);
+        }
+
+        public int DeleteInventario(Inventario inventario)
+        {
+
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    SqlCommand command = new SqlCommand("DeleteInventario", cn);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ID", inventario.ID);
+
+                    resultToReturn = command.ExecuteNonQuery();
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
+        public int DeleteVentas(Ventas ventas)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    SqlCommand command = new SqlCommand("DeleteVentas", cn);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ID", ventas.ID);
+
+                    resultToReturn = command.ExecuteNonQuery();
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
+        public int DeleteServicioMantenimiento(ServicioMantenimiento servicioMantenimiento)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    SqlCommand command = new SqlCommand("DeleteServicioMantenimiento", cn);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", servicioMantenimiento.Id);
+
+                    resultToReturn = command.ExecuteNonQuery();
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
+        public int DeleteServicioRespuesto(ServicioRespuesto servicioRespuesto)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    SqlCommand command = new SqlCommand("DeleteServicioRespuesto", cn);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", servicioRespuesto.Id);
+
+                    resultToReturn = command.ExecuteNonQuery();
+                    cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
+        public int UpdateServicioRepuesto(ServicioRespuesto servicioRepuesto)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    using (SqlTransaction transaction = cn.BeginTransaction())
+                    {
+                        try
+                        {
+                            SqlCommand command = new SqlCommand("ActualizarServicioRepuesto", cn, transaction);
+                            command.CommandType = System.Data.CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Id", servicioRepuesto.Id);
+                            command.Parameters.AddWithValue("@IdVehiculo", servicioRepuesto.IdVehiculo);
+                            command.Parameters.AddWithValue("@Descripcion", servicioRepuesto.Descripcion);
+                            command.Parameters.AddWithValue("@IdTipoRepuesto", servicioRepuesto.IdTipoRepuesto);
+
+                            resultToReturn = command.ExecuteNonQuery();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
         }
 
     }

@@ -28,6 +28,11 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
+
+    <script src="~/Content/images/jquery.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <style>
         body {
             background-color: #00c0f3;
@@ -130,6 +135,7 @@
                         <th>Fecha de Venta</th>
                         <th>Cantidad</th>
                         <th>Usuario Que Realizo La Venta</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -146,11 +152,13 @@
                         <th>Tipo de Vehículo</th>
                         <th>Precio</th>
                         <th>Cantidad Disponible</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
+
 
         <div class="container">
             <h1>Historial de compras</h1>
@@ -178,6 +186,7 @@
                         <th>Precio</th>
                         <th>Descripción</th>
                         <th>Tipo de Mantenimiento</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -200,7 +209,7 @@
                     <label for="descripcion">Descripción:</label>
                     <textarea id="descripcion" name="Descripcion" placeholder="Ingrese una descripción"></textarea>
                 </div>
-                <button type="submit">Actualizar</button>
+                <button type="submit">Agregar</button>
             </form>
         </div>
 
@@ -222,13 +231,29 @@
                 </div>
                 <div>
                     <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="Descripcion" placeholder="Ingrese una descripción"></textarea>
+                    <textarea id="2descripcion" name="Descripcion" placeholder="Ingrese una descripción"></textarea>
                 </div>
+                <button type="button" id="botonActualizar" style="display: none;">Actualizar</button>
                 <button type="submit">Agregar</button>
             </form>
         </div>
 
-
+        <div class="container">
+            <h1>Servicios de Repuestos</h1>
+            <table class="table" id="tablaServiciosRepuestos">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Vehículo</th>
+                        <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Tipo de Repuesto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
 
 
@@ -301,6 +326,10 @@
     </div>
 </body>
 </html>
+
+<script>
+
+</script>
 
 
 
