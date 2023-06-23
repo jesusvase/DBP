@@ -576,8 +576,10 @@ function actualizarRepuesto(servicio) {
             //alert('El servicio de repuesto se actualizó correctamente.');
             // Aquí puedes redirigir a otra página si es necesario
             // Por ejemplo: window.location.href = '/Carro/Index';
+            toastr.success('El repuesto ha sido actualizado exitosamente');
             loadServiciosRepuesto();
             $('#botonActualizar').hide();
+
         },
         error: function (xhr, status, error) {
             // Hubo un error en la actualización
