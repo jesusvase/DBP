@@ -793,6 +793,8 @@ namespace PRUEBAS_LOGIN.Controllers
             return resultToReturn;
         }
 
+
+        // Update Repuesto // 
         public int UpdateServicioRepuesto(ServicioRespuesto servicioRepuesto)
         {
             int resultToReturn = 0;
@@ -832,6 +834,49 @@ namespace PRUEBAS_LOGIN.Controllers
 
             return resultToReturn;
         }
+
+        //Update Mantenimiento // 
+
+        public int UpdateServicioMantenimiento(ServicioMantenimiento servicioMantenimiento)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    using (SqlTransaction transaction = cn.BeginTransaction())
+                    {
+                        try
+                        {
+                            SqlCommand command = new SqlCommand("ActualizarServicioMantenimiento", cn, transaction);
+                            command.CommandType = System.Data.CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Id", servicioMantenimiento.Id);
+                            command.Parameters.AddWithValue("@IdVehiculo", servicioMantenimiento.IdVehiculo);
+                            command.Parameters.AddWithValue("@Descripcion", servicioMantenimiento.Descripcion);
+                            command.Parameters.AddWithValue("@IdTipoMantenimiento", servicioMantenimiento.IdTipoMantenimiento);
+
+                            resultToReturn = command.ExecuteNonQuery();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
 
     }
 }

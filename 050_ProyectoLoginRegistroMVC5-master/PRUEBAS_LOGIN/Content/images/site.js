@@ -346,6 +346,14 @@ function loadServiciosMantenimiento() {
 
                 const accionesCell = document.createElement('td');
 
+                const actualizarCell = document.createElement('td');
+                const actualizarButton = document.createElement('button');
+                actualizarButton.textContent = 'Actualizar';
+                actualizarButton.classList.add('btn', 'btn-primary');
+                actualizarButton.addEventListener('click', () => mostrarFormularioActualizacion2(servicio));
+                actualizarCell.appendChild(actualizarButton);
+                row.appendChild(actualizarCell);
+
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Eliminar';
                 deleteButton.classList.add('btn', 'btn-danger');
@@ -533,7 +541,7 @@ var servicioActual;
 
 function mostrarFormularioActualizacion(servicio) {
     // Rellenar el formulario con los datos del servicio de repuesto
-    $('#VehiculoID3').val(servicio.IdVehiculo);
+    $('#VehiculoID').val(servicio.IdVehiculo);
     $('#TipoRepuesto').val(servicio.IdTipoRepuesto);
     $('#2descripcion').val(servicio.Descripcion);
 
@@ -550,6 +558,28 @@ function mostrarFormularioActualizacion(servicio) {
     });
     
 }
+
+//Mostrar respuestos //
+
+function mostrarFormularioActualizacion2(servicio) {
+    // Rellenar el formulario con los datos del servicio de mantenimiento
+    $('#VehiculoID2').val(servicio.IdVehiculo);
+    $('#TipoMantenimiento').val(servicio.IdTipoMantenimiento);
+    $('#descripcion').val(servicio.Descripcion);
+
+    // Mostrar el botón de "Actualizar"
+    $('#botonGuardar').hide();
+    $('#botonActualizar2').show();
+
+    // Llamar a la función de actualización al hacer clic en el botón "Actualizar"
+    $('#botonActualizar2').off('click').on('click', function (e) {
+        e.preventDefault(); // Evitar el comportamiento predeterminado del botón
+
+        // Llamar a la función actualizarMantenimiento con el objeto servicio
+        actualizarMantenimiento(servicio);
+    });
+}
+
 
 function actualizarRepuesto(servicio) {
     // Obtener los datos del formulario
@@ -584,6 +614,45 @@ function actualizarRepuesto(servicio) {
         error: function (xhr, status, error) {
             // Hubo un error en la actualización
             alert('Error al actualizar el servicio de repuesto: ' + xhr.responseText);
+        }
+    });
+}
+
+
+// Actualizar Mantenimiento //
+
+function actualizarMantenimiento(servicio) {
+    // Obtener los datos del formulario
+    var idVehiculo = $('#VehiculoID2').val();
+    var idTipoMantenimiento = $('#TipoMantenimiento').val();
+    var descripcion = $('#descripcion').val();
+
+    // Crear el objeto de datos a enviar al servidor
+    var data = {
+        Id: servicio.Id,
+        IdVehiculo: idVehiculo,
+        IdTipoMantenimiento: idTipoMantenimiento,
+        Descripcion: descripcion
+    };
+
+    // Enviar la solicitud de actualización al servidor
+    $.ajax({
+        url: '/Carro/UpdateServicioMantenimiento',
+        type: 'POST',
+        data: JSON.stringify(data), // Convertir los datos a JSON
+        contentType: 'application/json', // Establecer el encabezado de tipo de contenido como JSON
+        success: function (response) {
+            // La actualización fue exitosa
+            //alert('El servicio de mantenimiento se actualizó correctamente.');
+            // Aquí puedes redirigir a otra página si es necesario
+            // Por ejemplo: window.location.href = '/Carro/Index';
+            toastr.success('El mantenimiento ha sido actualizado exitosamente');
+            loadServiciosMantenimiento();
+            $('#botonActualizar2').hide();
+        },
+        error: function (xhr, status, error) {
+            // Hubo un error en la actualización
+            alert('Error al actualizar el servicio de mantenimiento: ' + xhr.responseText);
         }
     });
 }
