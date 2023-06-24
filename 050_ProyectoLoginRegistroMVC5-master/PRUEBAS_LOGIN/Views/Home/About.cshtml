@@ -20,6 +20,7 @@
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="~/Content/css/About.css" rel="stylesheet" />
 
     <style>
         body {
@@ -35,15 +36,19 @@
 </head>
 <body>
     <nav class="navbar justify-content-center">
-        <a href="#" class="nav-item nav-link active">Home</a>
-        <a href="#" class="nav-item nav-link">Profile</a>
+        <a href="#" class="nav-item nav-link active">Incio</a>
+        <a href="#" class="nav-item nav-link">Perfil</a>
         <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
-        <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
+        <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reportes</a>
     </nav>
 
     <div class="container">
+        <h2>Ventas</h2>
+    </div>
+
+    <div class="container">
         <form action="@Url.Action("Registrar2","Acceso")" method="post">
-            <h3>Register personas de ventas</h3>
+            <h3>Registro de personas</h3>
 
             <div class="form-group row">
                 <label for="Correo" class="col-sm-2 col-form-label">Correo</label>
@@ -73,7 +78,7 @@
                 </div>
             }
 
-            <button type="submit" name="button">Log In</button>
+            <button type="submit" name="button">Iniciar Sesión</button>
         </form>
     </div>
 
@@ -112,7 +117,7 @@
                     <th>Precio de Venta</th>
                     <th>Fecha de Venta</th>
                     <th>Cantidad</th>
-                    <th>Usuario Que Realizo La Venta</th>
+                    <th>Usuario que Realizó La Venta</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -203,91 +208,91 @@
         </div>
     </div>
 
-        <div class="container">
-            <h1>Servicios de Repuestos</h1>
-            <table class="table" id="tablaServiciosRepuestos">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Vehículo</th>
-                        <th>Precio</th>
-                        <th>Descripción</th>
-                        <th>Tipo de Repuesto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div class="container">
+        <h1>Servicios de Repuestos</h1>
+        <table class="table" id="tablaServiciosRepuestos">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Vehículo</th>
+                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Repuesto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
 
-        <script src="site.js"></script>
-        <script src="jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="script.js"></script>
+    <script src="site.js"></script>
+    <script src="jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="script.js"></script>
 
-        <footer>
-            <div class="footer-top">
-                <div class="container">
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-facebook fa-2x"></i>Facebook</a>
-                    </div>
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-twitter fa-2x"></i>Twitter</a>
-                    </div>
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-flickr fa-2x"></i>Flickr</a>
-                    </div>
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-tumblr fa-2x"></i>Tumblr</a>
-                    </div>
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-github fa-2x"></i>Github</a>
-                    </div>
-                    <div class="col-lg-2 col-xs-12 text-center">
-                        <a href="#"><i class="fa fa-google-plus fa-2x"></i>Google</a>
-                    </div>
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-facebook fa-2x"></i>Facebook</a>
                 </div>
-            </div>
-
-            <div class="container" style="border-top:1px solid grey;">
-                <div class="row text-center">
-                    <div class="col-lg-6 col-lg-offset-3">
-                        <ul class="menu">
-                            <li>
-                                <a href="#">Home</a>
-                            </li>
-
-                            <li>
-                                <a href="#">About</a>
-                            </li>
-
-                            <li>
-                                <a href="#">Blog</a>
-                            </li>
-
-                            <li>
-                                <a href="#">Gallery</a>
-                            </li>
-
-                            <li>
-                                <a href="#">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-twitter fa-2x"></i>Twitter</a>
                 </div>
-            </div>
-        </footer>
-
-
-        <div class="container text-center">
-            <!-- Agrega la clase "text-center" para centrar el contenido -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright © 2023 All rights reserved</p>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-flickr fa-2x"></i>Flickr</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-tumblr fa-2x"></i>Tumblr</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-github fa-2x"></i>Github</a>
+                </div>
+                <div class="col-lg-2 col-xs-12 text-center">
+                    <a href="#"><i class="fa fa-google-plus fa-2x"></i>Google</a>
                 </div>
             </div>
         </div>
+
+        <div class="container" style="border-top:1px solid grey;">
+            <div class="row text-center">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <ul class="menu">
+                        <li>
+                            <a href="#">Inicio</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Acerca</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Blog</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Galeria</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <div class="container text-center">
+        <!-- Agrega la clase "text-center" para centrar el contenido -->
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright © 2023 All rights reserved</p>
+            </div>
+        </div>
+    </div>
 
 
 </body>

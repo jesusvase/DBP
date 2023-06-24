@@ -47,15 +47,20 @@
 </head>
 <body>
     <nav class="navbar justify-content-center">
-        <a href="#" class="nav-item nav-link active">Home</a>
-        <a href="#" class="nav-item nav-link">Profile</a>
+        <a href="#" class="nav-item nav-link active">Inicio</a>
+        <a href="#" class="nav-item nav-link">Perfil</a>
         <a href="@Url.Action("CerrarSesion", "Home")" class="nav-item nav-link">Salir</a>
-        <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
+        <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reportes</a>
     </nav>
 
     <div class="container">
+        <h2>Iventario</h2>
+    </div>
+
+
+    <div class="container">
         <form action="@Url.Action("Registrar3","Acceso")" method="post">
-            <h3>Register Here 3</h3>
+            <h3>Registro</h3>
 
             <div class="form-group row">
                 <label for="Correo" class="col-sm-2 col-form-label">Correo</label>
@@ -85,7 +90,7 @@
                 </div>
             }
 
-            <button type="submit" name="button">Log In</button>
+            <button type="submit" name="button">Inicio</button>
         </form>
 
         <div>
@@ -109,7 +114,7 @@
         </div>
 
         <div class="container">
-            <h1>Vehiculos</h1>
+            <h1>Vehículos</h1>
             <table class="table" id="tablaVehiculos">
                 <thead>
                     <tr>
@@ -191,11 +196,11 @@
                 <div class="col-lg-6 col-lg-offset-3">
                     <ul class="menu">
                         <li>
-                            <a href="#">Home</a>
+                            <a href="#">Inicio</a>
                         </li>
 
                         <li>
-                            <a href="#">About</a>
+                            <a href="#">Acerca</a>
                         </li>
 
                         <li>
@@ -203,11 +208,11 @@
                         </li>
 
                         <li>
-                            <a href="#">Gallery</a>
+                            <a href="#">Galeria</a>
                         </li>
 
                         <li>
-                            <a href="#">Contact</a>
+                            <a href="#">Contacto</a>
                         </li>
                     </ul>
                 </div>

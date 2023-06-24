@@ -3,8 +3,10 @@
     "",
     "\\050_ProyectoLoginRegistroMVC5-master",
     "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN",
-    "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Controllers"
+    "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Controllers",
+    "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Views",
+    "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Views\\Home"
   ],
-  "SelectedNode": "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Controllers\\CarroController.cs",
+  "SelectedNode": "\\050_ProyectoLoginRegistroMVC5-master\\PRUEBAS_LOGIN\\Views\\Home\\Contact.cshtml",
   "PreviewInSolutionExplorer": false
 }
