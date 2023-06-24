@@ -83,7 +83,108 @@ function loadInventario() {
                 });
                 accionesCell.appendChild(deleteButton);
 
+                const actualizarCell = document.createElement('td');
+                const actualizarButton = document.createElement('button');
+                actualizarButton.textContent = 'Actualizar';
+                actualizarButton.classList.add('btn', 'btn-primary');
+                actualizarButton.addEventListener('click', () => mostrarFormularioActualizacionInventario(inventario));
+                actualizarCell.appendChild(actualizarButton);
+                row.appendChild(actualizarCell);
+
+
                 row.appendChild(accionesCell);
+
+                newTbody.appendChild(row);
+            });
+
+            // Agregar el nuevo tbody con las filas a la tabla
+            tabla.appendChild(newTbody);
+        });
+}
+
+function mostrarFormularioActualizacionInventario(inventario) {
+    // Rellenar el formulario con los datos del servicio de repuesto
+    $('#cantidad').val(inventario.CantidadDisponible);
+
+    // Mostrar el botón de "Actualizar"
+    $('#botonActualizar3').show();
+
+    // Llamar a la función de actualización al hacer clic en el botón "Actualizar"
+    $('#botonActualizar3').off('click').on('click', function (e) {
+        e.preventDefault(); // Evitar el comportamiento predeterminado del botón
+
+        // Llamar a la función actualizarRepuesto con el objeto servicio
+        actualizarInventario(inventario);
+    });
+
+}
+
+function actualizarInventario(inventario) {
+    // Obtener los datos del formulario
+    var CantidadDisponible = $('#cantidad').val();
+
+    // Crear el objeto de datos a enviar al servidor
+    var data = {
+        Id: inventario.ID,
+        cantidadDisponible: CantidadDisponible
+    };
+
+    // Enviar la solicitud de actualización al servidor
+    $.ajax({
+        url: '/Carro/ActualizarInventario',
+        type: 'POST',
+        data: JSON.stringify(data), // Convertir los datos a JSON
+        contentType: 'application/json', // Establecer el encabezado de tipo de contenido como JSON
+        success: function (response) {
+            // La actualización fue exitosa
+            //alert('El servicio de repuesto se actualizó correctamente.');
+            // Aquí puedes redirigir a otra página si es necesario
+            // Por ejemplo: window.location.href = '/Carro/Index';
+            toastr.success('El inventario ha sido actualizado exitosamente');
+            loadInventario();
+            $('#botonActualizar3').hide();
+
+        },
+        error: function (xhr, status, error) {
+            // Hubo un error en la actualización
+            alert('Error al actualizar el inventario de repuesto: ' + xhr.responseText);
+        }
+    });
+}
+
+function loadInventarioCliente() {
+    fetch('/Carro/GetInventario')
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tablaInventarioCliente');
+            const tbody = tabla.querySelector('tbody');
+
+            // Clonar el elemento tbody
+            const newTbody = tbody.cloneNode(false);
+
+            // Reemplazar el tbody existente por el clon
+            tbody.parentNode.replaceChild(newTbody, tbody);
+
+            data.forEach(inventario => {
+                const row = document.createElement('tr');
+
+                const nombreVehiculoCell = document.createElement('td');
+                nombreVehiculoCell.textContent = inventario.Vehiculo.Nombre;
+                row.appendChild(nombreVehiculoCell);
+
+                const tipoVehiculoCell = document.createElement('td');
+                tipoVehiculoCell.textContent = inventario.Vehiculo.TipoVehiculo.Nombre;
+                row.appendChild(tipoVehiculoCell);
+
+                const precioCell = document.createElement('td');
+                precioCell.textContent = inventario.Vehiculo.Precio; // Agregar el campo Precio
+                row.appendChild(precioCell);
+
+                const cantidadDisponibleCell = document.createElement('td');
+                cantidadDisponibleCell.textContent = inventario.CantidadDisponible;
+                row.appendChild(cantidadDisponibleCell);
+
+                
 
                 newTbody.appendChild(row);
             });
@@ -657,8 +758,106 @@ function actualizarMantenimiento(servicio) {
     });
 }
 
+function loadVehiculos() {
+    fetch('/Carro/GetVehiculoss')
+        .then(response => response.json())
+        .then(data => {
+            const tabla = document.getElementById('tablaVehiculos');
+            const tbody = tabla.querySelector('tbody');
 
+            // Clonar el elemento tbody
+            const newTbody = tbody.cloneNode(false);
 
+            // Reemplazar el tbody existente por el clon
+            tbody.parentNode.replaceChild(newTbody, tbody);
+
+            data.forEach(vehiculo => {
+                const row = document.createElement('tr');
+
+                const nombreCell = document.createElement('td');
+                nombreCell.textContent = vehiculo.Nombre;
+                row.appendChild(nombreCell);
+
+                const tipoVehiculoCell = document.createElement('td');
+                tipoVehiculoCell.textContent = vehiculo.TipoVehiculo.Nombre;
+                row.appendChild(tipoVehiculoCell);
+
+                const precioCell = document.createElement('td');
+                precioCell.textContent = vehiculo.Precio;
+                row.appendChild(precioCell);
+
+                const actualizarCell = document.createElement('td');
+                const actualizarButton = document.createElement('button');
+                actualizarButton.textContent = 'Actualizar';
+                actualizarButton.classList.add('btn', 'btn-primary');
+                actualizarButton.addEventListener('click', () => mostrarFormularioActualizacionVehiculos(vehiculo));
+                actualizarCell.appendChild(actualizarButton);
+                row.appendChild(actualizarCell);
+
+                newTbody.appendChild(row);
+            });
+
+            // Agregar el nuevo tbody con las filas a la tabla
+            tabla.appendChild(newTbody);
+        });
+}
+
+function mostrarFormularioActualizacionVehiculos(vehiculo) {
+    // Rellenar el formulario con los datos del servicio de repuesto
+    $('#nombre').val(vehiculo.Nombre);
+    $('#tipoVehiculo').val(vehiculo.TipoVehiculoID);
+    $('#precio').val(vehiculo.Precio);
+    
+    // Mostrar el botón de "Actualizar"
+    $('#botonGuardar').hide();
+    $('#botonActualizar4').show();
+
+    // Llamar a la función de actualización al hacer clic en el botón "Actualizar"
+    $('#botonActualizar4').off('click').on('click', function (e) {
+        e.preventDefault(); // Evitar el comportamiento predeterminado del botón
+
+        // Llamar a la función actualizarRepuesto con el objeto servicio
+        actualizarVehiculo(vehiculo);
+    });
+
+}
+
+function actualizarVehiculo(vehiculo) {
+    // Obtener los datos del formulario
+    var Nombre = $('#nombre').val();
+    var TipoVehiculoID = $('#tipoVehiculo').val();
+    var Precio = $('#precio').val();
+
+    // Crear el objeto de datos a enviar al servidor
+    var data = {
+        Id: vehiculo.ID,
+        Nombre: Nombre,
+        TipoVehiculoID: TipoVehiculoID,
+        Precio: Precio
+    };
+
+    // Enviar la solicitud de actualización al servidor
+    $.ajax({
+        url: '/Carro/ActualizarVehiculo',
+        type: 'POST',
+        data: JSON.stringify(data), // Convertir los datos a JSON
+        contentType: 'application/json', // Establecer el encabezado de tipo de contenido como JSON
+        success: function (response) {
+            // La actualización fue exitosa
+            //alert('El servicio de repuesto se actualizó correctamente.');
+            // Aquí puedes redirigir a otra página si es necesario
+            // Por ejemplo: window.location.href = '/Carro/Index';
+            toastr.success('El vehiculo ha sido actualizado exitosamente');
+            loadVehiculos();
+            $('#botonActualizar4').hide();
+
+        },
+        error: function (xhr, status, error) {
+            // Hubo un error en la actualización
+            alert('Error al actualizar el vehiculo de repuesto: ' + xhr.responseText);
+        }
+    });
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -675,4 +874,6 @@ document.addEventListener('DOMContentLoaded', function () {
     obtenerTiposRepuesto();
     obtenerVehiculos3();
     loadServiciosRepuesto();
+    loadInventarioCliente();
+    loadVehiculos();
 });

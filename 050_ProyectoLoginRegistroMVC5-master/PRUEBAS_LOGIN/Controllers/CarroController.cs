@@ -102,6 +102,87 @@ namespace PRUEBAS_LOGIN.Controllers
             return Json(vehiculos, JsonRequestBehavior.AllowGet);
         }
 
+        public List<Vehiculo> ObtenerVehiculos()
+        {
+            List<Vehiculo> vehiculos = new List<Vehiculo>();
+
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                cn.Open();
+                SqlCommand command = new SqlCommand("ObtenerVehiculos", cn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader sqlDataReader = command.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    vehiculos.Add(new Vehiculo
+                    {
+                        ID = Convert.ToInt32(sqlDataReader["ID"]),
+                        Nombre = sqlDataReader["Nombre"].ToString(),
+                        TipoVehiculo = new TipoVehiculo
+                        {
+                            Nombre = sqlDataReader["TipoVehiculo"].ToString()
+                        },
+                        Precio = sqlDataReader.GetDecimal(sqlDataReader.GetOrdinal("Precio"))
+                    });
+                }
+
+                cn.Close();
+            }
+
+            return vehiculos;
+        }
+
+
+        public ActionResult GetVehiculoss()
+        {
+            List<Vehiculo> vehiculos = ObtenerVehiculos();
+
+            return Json(vehiculos, JsonRequestBehavior.AllowGet);
+        }
+
+        public int ActualizarVehiculo(Vehiculo vehiculo)
+        {
+            int resultToReturn = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+                    using (SqlTransaction transaction = cn.BeginTransaction())
+                    {
+                        try
+                        {
+                            SqlCommand command = new SqlCommand("ActualizarVehiculo", cn, transaction);
+                            command.CommandType = System.Data.CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Id", vehiculo.ID);
+                            command.Parameters.AddWithValue("@Nombre", vehiculo.Nombre);
+                            command.Parameters.AddWithValue("@TipoVehiculoId", vehiculo.TipoVehiculoID);
+                            command.Parameters.AddWithValue("@Precio", vehiculo.Precio);
+
+                            resultToReturn = command.ExecuteNonQuery();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultToReturn;
+        }
+
+
         /////////////////////////////////////////////////INVENTARIO/////////////////////////////////////////
         ///
         public List<Inventario> ObtenerInventario()
@@ -877,6 +958,50 @@ namespace PRUEBAS_LOGIN.Controllers
             return resultToReturn;
         }
 
+        public int ActualizarInventario(Inventario inventario)
+        {
+            int resultado = 0;
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    cn.Open();
+
+                    using (SqlTransaction transaction = cn.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Obtener el VehiculoID correspondiente al ID proporcionado
+                            
+
+                            // Actualizar el inventario
+                            SqlCommand command = new SqlCommand("ActualizarInventario", cn, transaction);
+                            command.CommandType = System.Data.CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@ID", inventario.ID);
+                            command.Parameters.AddWithValue("@Cantidad", inventario.CantidadDisponible);
+                            resultado = command.ExecuteNonQuery();
+
+                            // Realizar otras acciones relacionadas con el VehiculoID obtenido
+                            // ...
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
 
     }
 }

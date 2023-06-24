@@ -41,48 +41,41 @@
         <a href="@Url.Content("~/Home/Contact")" class="nav-item nav-link">Reports</a>
     </nav>
 
+    
+
     <div class="container">
-        <form action="@Url.Action("Registrar2","Acceso")" method="post">
-            <h3>Register Here</h3>
-
-            <div class="form-group row">
-                <label for="Correo" class="col-sm-2 col-form-label">Correo</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="Correo" name="Correo" placeholder="Correo" required>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="Clave" class="col-sm-2 col-form-label">Contraseña</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Contraseña" required>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="ConfirmarClave" class="col-sm-2 col-form-label">Confirmar Contraseña</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" placeholder="Confirmar Contraseña" required>
-                </div>
-            </div>
-
-            @if (ViewData["Mensaje"] != null)
-            {
-                <div class="alert alert-danger" role="alert">
-                    @ViewData["Mensaje"]
-                </div>
-            }
-
-            <button type="submit" name="button">Log In</button>
-        </form>
+        <table id="tablaUsuarios" class="table table-striped table-bordered">
+            <thead class="table-white">
+                <tr>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 
-    
+    <div id="formContainer" class="container" style="display: none;">
+        <h2>Actualizar Usuario</h2>
+        <form id="updateForm">
+            <div class="form-group">
+                <label for="correo">Correo:</label>
+                <input type="email" class="form-control" id="correo" required>
+            </div>
+            <div class="form-group">
+                <label for="clave">Clave:</label>
+                <input type="password" class="form-control" id="clave" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="updateButton">Actualizar</button>
+            <button type="button" class="btn btn-danger" id="deleteButton">Eliminar</button>
+        </form>
+    </div>
 
 
     <div class="container">
         <h1>Inventario</h1>
-        <table class="table" id="tablaInventario">
+        <table class="table" id="tablaInventarioCliente">
             <thead>
                 <tr>
                     <th>Nombre del Vehículo</th>
@@ -184,4 +177,134 @@
 
 </body>
 </html>
+
+<script>
+    function loadUsuarios() {
+        fetch('/Acceso/GetUsuarios')
+            .then(response => response.json())
+            .then(data => {
+                const tabla = document.getElementById('tablaUsuarios');
+                const tbody = tabla.querySelector('tbody');
+
+                // Clonar el elemento tbody
+                const newTbody = tbody.cloneNode(false);
+
+                // Reemplazar el tbody existente por el clon
+                tbody.parentNode.replaceChild(newTbody, tbody);
+
+                data.forEach(usuario => {
+                    const row = document.createElement('tr');
+
+                    const correoCell = document.createElement('td');
+                    correoCell.textContent = usuario.Correo;
+                    row.appendChild(correoCell);
+
+                    const accionesCell = document.createElement('td');
+                    const updateButton = document.createElement('button');
+                    updateButton.textContent = 'Actualizar';
+                    updateButton.classList.add('btn', 'btn-primary', 'mr-2'); // Agrega la clase 'mr-2' para agregar un margen derecho
+                    updateButton.addEventListener('click', function () {
+                        mostrarFormulario(usuario);
+                    });
+                    accionesCell.appendChild(updateButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.classList.add('btn', 'btn-danger');
+                    deleteButton.addEventListener('click', function () {
+                        eliminarUsuario(usuario);
+                    });
+                    accionesCell.appendChild(deleteButton);
+
+                    row.appendChild(accionesCell);
+
+                    newTbody.appendChild(row);
+                });
+
+                // Agregar el nuevo tbody con las filas a la tabla
+                tabla.appendChild(newTbody);
+            });
+    }
+
+
+    function mostrarFormulario(usuario) {
+        const formContainer = document.getElementById('formContainer');
+        const form = document.getElementById('updateForm');
+        const correoInput = document.getElementById('correo');
+        const claveInput = document.getElementById('clave');
+
+        // Guardar la información del usuario en atributos personalizados
+        form.setAttribute('data-idusuario', usuario.IdUsuario);
+        correoInput.value = usuario.Correo;
+        claveInput.value = '';
+        //tipoInput.value = usuario.Tipo;
+
+        formContainer.style.display = 'block';
+    }
+
+    document.getElementById('updateButton').addEventListener('click', function () {
+        const form = document.getElementById('updateForm');
+
+        // Obtener la información del usuario de los atributos personalizados
+        const idUsuario = form.getAttribute('data-idusuario');
+        const correoInput = document.getElementById('correo');
+        const claveInput = document.getElementById('clave');
+        //const tipoInput = form.getAttribute('data-Tipo');
+
+        const updatedCorreo = correoInput.value;
+        const updatedClave = claveInput.value;
+        
+
+        fetch('/Acceso/UpdateUsuario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                IdUsuario: idUsuario,
+                Correo: updatedCorreo,
+                Clave: updatedClave,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const formContainer = document.getElementById('formContainer');
+                formContainer.style.display = 'none';
+                loadUsuarios();
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+
+
+
+
+    function eliminarUsuario(usuario) {
+        if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+            fetch('/Acceso/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    IdUsuario: usuario.IdUsuario
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    toastr.success('El usuario ha sido eliminado exitosamente');
+                    loadUsuarios();
+                })
+                .catch(error => {
+                    console.error(error);
+                    toastr.error('Se produjo un error al eliminar el usuario');
+                });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadUsuarios();
+    });
+</script>
 

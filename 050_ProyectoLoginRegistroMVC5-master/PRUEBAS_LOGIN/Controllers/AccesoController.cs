@@ -185,35 +185,35 @@ namespace PRUEBAS_LOGIN.Controllers
 
         public List<Usuario> Get()
         {
-
-            List<Usuario> Usuarios = new List<Usuario>();
+            List<Usuario> usuarios = new List<Usuario>();
 
             using (SqlConnection cn = new SqlConnection(cadena))
             {
-
                 cn.Open();
+                int idUsuario = (int)Session["IdUsuario"];
                 SqlCommand command = new SqlCommand("ObtenerUsuarios", cn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@ID", idUsuario);
 
                 SqlDataReader sqlDataReader = command.ExecuteReader();
 
                 while (sqlDataReader.Read())
                 {
-                    Usuarios.Add(new Usuario
+                    usuarios.Add(new Usuario
                     {
                         IdUsuario = Convert.ToInt32(sqlDataReader["IdUsuario"]),
                         Correo = sqlDataReader["Correo"].ToString(),
                         Clave = sqlDataReader["Clave"].ToString(),
                         Tipo = Convert.ToInt32(sqlDataReader["Tipo"])
                     });
-
                 }
 
                 cn.Close();
-
-                return Usuarios;
             }
 
+            return usuarios;
         }
+
 
         public ActionResult GetUsuarios()
         {
@@ -333,7 +333,6 @@ namespace PRUEBAS_LOGIN.Controllers
                             command.Parameters.AddWithValue("@IdUsuario", usuario.IdUsuario);
                             command.Parameters.AddWithValue("@Correo", usuario.Correo);
                             command.Parameters.AddWithValue("@Clave", contraseñaEncriptada);
-                            command.Parameters.AddWithValue("@Tipo", usuario.Tipo);
 
                             resultToReturn = command.ExecuteNonQuery();
 
