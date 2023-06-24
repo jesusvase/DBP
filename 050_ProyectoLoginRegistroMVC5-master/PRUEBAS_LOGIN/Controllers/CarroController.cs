@@ -366,13 +366,13 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     cmd.ExecuteNonQuery();
                     // Venta agregada correctamente
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
                 catch (SqlException ex)
                 {
                     // Ocurrió un error al agregar la venta
                     ViewBag.ErrorMessage = "Ocurrió un error al agregar la venta: " + ex.Message;
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
             }
         }
@@ -617,13 +617,13 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     cmd.ExecuteNonQuery();
                     // Servicio de mantenimiento agregado correctamente
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
                 catch (SqlException ex)
                 {
                     // Ocurrió un error al agregar el servicio de mantenimiento
                     ViewBag.ErrorMessage = "Ocurrió un error al agregar el servicio de mantenimiento: " + ex.Message;
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
             }
         }
@@ -733,13 +733,13 @@ namespace PRUEBAS_LOGIN.Controllers
                 {
                     cmd.ExecuteNonQuery();
                     // Servicio de repuesto agregado correctamente
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
                 catch (SqlException ex)
                 {
                     // Ocurrió un error al agregar el servicio de repuesto
                     ViewBag.ErrorMessage = "Ocurrió un error al agregar el servicio de repuesto: " + ex.Message;
-                    return RedirectToAction("Contact", "Home"); // Redirecciona a una página de éxito
+                    return RedirectToAction("About", "Home"); // Redirecciona a una página de éxito
                 }
             }
         }

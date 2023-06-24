@@ -130,7 +130,7 @@ namespace PRUEBAS_LOGIN.Controllers
             ViewData["Mensaje"] = mensaje;
 
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("About", "Home");
             
         }
 
